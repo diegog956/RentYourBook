@@ -1,4 +1,5 @@
 from fastapi import FastAPI, status
+from app.api import user_router
 
 app = FastAPI()
 
