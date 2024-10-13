@@ -8,7 +8,7 @@ class UserRegister (BaseModel):
     '''
     Modelo para registro de usuario.
     '''
-    # id_users: UUID = UUID() No lo ingresa el usuario.
+    # id_users: UUID = UUID() No, ya que no lo ingresa el usuario.
 
     username: str 
     password: str = Field(min_length=8)
@@ -42,13 +42,15 @@ class UserInfo(BaseModel):
     
     '''
 
-    id_users: UUID
+    # id_users: UUID No lo retorno por que es con el que lo busco.
     username: str 
     name: str
     lastname: str
     email: EmailStr
     birthdate: date
     role: Role
+    #Agregar cuando cree entidad libros:
+    #rented_books : List[Books]
     warning_amount: int
     ban: bool
 
@@ -69,7 +71,7 @@ class UserChangeProfileData(BaseModel):
     email: EmailStr
     birthdate: date
 
-
+ 
 
 
 
