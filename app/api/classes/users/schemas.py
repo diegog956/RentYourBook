@@ -7,10 +7,10 @@ from typing_extensions import Self
 class UserRegister (BaseModel):
     '''
     Modelo para registro de usuario.
+    El usuario es el email.
     '''
     # id_users: UUID = UUID() No, ya que no lo ingresa el usuario.
 
-    username: str 
     password: str = Field(min_length=8)
     verify_password: str
     name: str
@@ -38,12 +38,12 @@ class UserInfo(BaseModel):
     '''
     
     Modelo que asemeja a ORM y es devuelto al frontend
-    para que el usuario visualice sus datos en perfil
+    para que el usuario visualice sus datos en perfil.
     
     '''
 
     # id_users: UUID No lo retorno por que es con el que lo busco.
-    username: str 
+    
     name: str
     lastname: str
     email: EmailStr
@@ -65,7 +65,6 @@ class UserChangeProfileData(BaseModel):
 
     '''
     
-    username: str 
     name: str
     lastname: str
     email: EmailStr
