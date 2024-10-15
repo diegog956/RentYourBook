@@ -9,6 +9,7 @@ class BookAdd (BaseModel):
  release_year: date
  favorites_amount: int | 0
  available_units: int
+ image_url: str
 
 class BookInfo (BaseModel):
  
@@ -19,6 +20,7 @@ class BookInfo (BaseModel):
  release_year: date
  favorites_amount: int
  available_units: int
+ image_url: str
 
 
 
