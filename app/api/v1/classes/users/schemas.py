@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, EmailStr, model_validator
+from pydantic import BaseModel, Field, EmailStr, model_validator, field_validator
 from uuid import UUID
 from datetime import date
-from app.api.utils.enums import Role
+from app.api.v1.utils.enums import Role
 from typing_extensions import Self
+
 
 class UserRegister (BaseModel):
     '''
@@ -11,7 +12,7 @@ class UserRegister (BaseModel):
     '''
     # id_users: UUID = UUID() No, ya que no lo ingresa el usuario.
 
-    password: str = Field(min_length=8)
+    hashed_password: str 
     verify_password: str
     name: str
     lastname: str
@@ -25,14 +26,20 @@ class UserRegister (BaseModel):
     # role: Role = Role.USER
     # warning_amount: int = 0
     # ban: bool = False
+    # rented_boooks = 0
 
     @model_validator(mode='after')
     def verify_passwords(self)-> Self:
-        if self.password == self.verify_password:
+        if self.hashed_password == self.verify_password:
             return self 
         else:
             raise ValueError('Passwords do not match')
 
+    @field_validator('hashed_password')
+    def check_password_length(cls, v):
+        if len(v) < 8:
+            raise ValueError("El password debe tener al menos 8 caracteres.")
+        return v
 
 class UserInfo(BaseModel):
     '''
