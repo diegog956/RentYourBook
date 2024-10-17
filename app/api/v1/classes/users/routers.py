@@ -1,7 +1,13 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from .schemas import UserRegister, UserInfo
 from uuid import UUID
+import app.api.v1.classes.users.service as service
+from sqlalchemy.orm import Session
+from app.api.v1.database.database import get_db
+
+
 user_router = APIRouter()
+
 
 #<----------- GET ----------->#
 
@@ -26,6 +32,13 @@ def get_all_users():
 
 '[POST] Envia a la base de datos la informacion del usuario a crear' 
 @user_router.post('/register', status_code=status.HTTP_201_CREATED)
-def register(user_register: UserRegister):
-    #Llamada al servicio y.. posterior retorno de la informacion del usuario?
-    return user_register.__dict__
+def register(user_register: UserRegister, db: Session = Depends(get_db)):
+    
+    try:
+        return service.register_user(user_register,db)
+    
+    except ValueError as e:
+    
+        raise HTTPException(detail= e.errors(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    
+    
