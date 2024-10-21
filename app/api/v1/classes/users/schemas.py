@@ -16,7 +16,7 @@ class UserRegister (BaseModel):
     verify_password: str
     name: str
     lastname: str
-    email: EmailStr
+    email: EmailStr 
     birthdate: date
 
     #Estos modelos no se colocan ya que no quiero que el usuario los ingrese. 
