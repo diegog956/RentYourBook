@@ -11,12 +11,11 @@ class UserRegister (BaseModel):
     El usuario es el email.
     '''
     # id_users: UUID = UUID() No, ya que no lo ingresa el usuario.
-
-    hashed_password: str 
-    verify_password: str
     name: str
     lastname: str
-    email: EmailStr 
+    email: EmailStr
+    password: str 
+    verify_password: str
     birthdate: date
 
     #Estos modelos no se colocan ya que no quiero que el usuario los ingrese. 
@@ -30,15 +29,15 @@ class UserRegister (BaseModel):
 
     @model_validator(mode='after')
     def verify_passwords(self)-> Self:
-        if self.hashed_password == self.verify_password:
+        if self.password == self.verify_password:
             return self 
         else:
-            raise ValueError('Passwords do not match')
+            raise ValueError('passwords do not match')
 
-    @field_validator('hashed_password')
+    @field_validator('password')
     def check_password_length(cls, v):
         if len(v) < 8:
-            raise ValueError("El password debe tener al menos 8 caracteres.")
+            raise ValueError("passwords must have at least 8 characters.")
         return v
 
 class UserInfo(BaseModel):
@@ -55,12 +54,15 @@ class UserInfo(BaseModel):
     lastname: str
     email: EmailStr
     birthdate: date
-    role: Role
+    user_role: Role
     #Agregar cuando cree entidad libros:
     #rented_books : List[Books]
-    warning_amount: int
+    warning_amounts: int
     ban: bool
 
+    class Config:
+        orm_mode:True
+    
 class UserChangeProfileData(BaseModel):
     '''
     
