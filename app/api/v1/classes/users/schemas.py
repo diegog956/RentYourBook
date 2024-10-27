@@ -3,7 +3,7 @@ from uuid import UUID
 from datetime import date
 from app.api.v1.utils.enums import Role
 from typing_extensions import Self
-
+from .models import User
 
 class UserRegister (BaseModel):
     '''
@@ -47,9 +47,8 @@ class UserInfo(BaseModel):
     para que el usuario visualice sus datos en perfil.
     
     '''
-
-    # id_users: UUID No lo retorno por que es con el que lo busco.
-    
+    #Luego quitar id_user al retornar informacion ya que se filtra por el mismo en la bdd.
+    id_user: UUID
     name: str
     lastname: str
     email: EmailStr
@@ -59,6 +58,10 @@ class UserInfo(BaseModel):
     #rented_books : List[Books]
     warning_amounts: int
     ban: bool
+
+    @classmethod
+    def from_orm(cls, user:User):
+        return cls(id_user = UUID(bytes=user.id_user))
 
     class Config:
         orm_mode:True
