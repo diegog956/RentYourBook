@@ -5,7 +5,7 @@ from fastapi import Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .models import User
-from uuid import uuid4
+from uuid import uuid4, UUID
 from app.api.v1.utils.enums import Role
 import bcrypt
 
@@ -32,6 +32,15 @@ def register_user(user: UserRegister, db: Session):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    #user_info : UserInfo = UserInfo( **{k: v for k, v in new_user.__dict__.items() if k in UserInfo.model_fields})
     return new_user
+
+def get_user_info(id: UUID,db:Session) -> User:
+    user: User = db.query(User).filter(User.id_user == id.bytes).first()
+    if user is None:
+        raise ValueError('User not found.')
+    return user
+
+def get_all_users(db:Session)-> list[User]:
+    lista: list[User] = db.query(User).all()
+    return lista
 
