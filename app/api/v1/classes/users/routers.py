@@ -13,7 +13,7 @@ user_router = APIRouter()
 #<----------- GET ----------->#
 
 '[GET] Retorna la Home que prueba el enrutamiento (?)'
-@user_router.get('/', response_model=list[UserInfo],status_code=status.HTTP_200_OK)
+@user_router.get('/all/', response_model=list[UserInfo],status_code=status.HTTP_200_OK)
 async def home_user(db: Session = Depends(get_db)):
     return service.get_all_users(db)
 
