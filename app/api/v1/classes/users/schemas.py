@@ -55,7 +55,12 @@ class UserInfo(BaseModel):
     birthdate: date
     user_role: Role
     #Agregar cuando cree entidad libros:
-    #rented_books : List[Books]
+    
+    #Cantidad de libros que posee?
+    #rented_books : int
+
+    #Lista de los libros que posee
+    #books_rented (?): list[Books]
     warning_amounts: int
     ban: bool
 
@@ -68,21 +73,38 @@ class UserInfo(BaseModel):
     
 class UserChangeProfileData(BaseModel):
     '''
-    
     Establece el modelo para el cambio de datos
     en el perfil de usuario.
     (Los datos cambiables, como por ejemplo, dia de nacimiento.)
-    
-    Pensar en cambio de contraseña.
 
+    Cambio de contraseña hacer aparte.
     '''
-    
     name: str
     lastname: str
+    password:str
     email: EmailStr
     birthdate: date
 
- 
+class PasswordChange(BaseModel):
+    '''
+    Permite el cambio de contraseña
+    '''
+    
+    old_password: str
+    new_password:str
+    verify_new_password:str
 
 
+    @model_validator(mode='after')
+    def verify_passwords(self)-> Self:
+        if self.new_password == self.verify_new_password:
+            return self 
+        else:
+            raise ValueError('passwords do not match')
+
+    @field_validator('new_password')
+    def check_password_length(cls, v):
+        if len(v) < 8:
+            raise ValueError("passwords must have at least 8 characters.")
+        return v
 
