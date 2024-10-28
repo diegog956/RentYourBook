@@ -13,9 +13,9 @@ user_router = APIRouter()
 #<----------- GET ----------->#
 
 '[GET] Retorna la Home que prueba el enrutamiento (?)'
-@user_router.get('/all/', response_model=list[UserInfo],status_code=status.HTTP_200_OK)
-async def home_user(db: Session = Depends(get_db)):
-    return service.get_all_users(db)
+@user_router.get('/', status_code=status.HTTP_200_OK)
+async def home_user():
+    return 'Users'
 
 '[GET] Devuelve la informacion del usuario por su id' #PROTEGER
 @user_router.get('/{id}', response_model=UserInfo ,status_code=status.HTTP_200_OK)
@@ -23,11 +23,11 @@ async def get_one_user(id: UUID, db: Session = Depends(get_db)):
     return service.get_user_info(id, db)
    
 
-'''Tener cuidado con rutas como '/all' ya que toma como que 'all' es un id! Ver ejemplo abajo.'''
-# '[GET] Devuelve todos los usuarios para listado en seccion admin' #PROTEGER
-# @user_router.get('/all', response_model=list[UserInfo], status_code=status.HTTP_200_OK)
-# async def get_all_users(db:Session=Depends(get_db)):
-#     return service.get_all_users(db)
+'''Tener cuidado con rutas como '/all' ya que toma como que 'all' es un id! '''
+'[GET] Devuelve todos los usuarios para listado en seccion admin' #PROTEGER
+@user_router.get('/all/', response_model=list[UserInfo], status_code=status.HTTP_200_OK)
+async def get_all_users(db:Session=Depends(get_db)):
+    return service.get_all_users(db)
 
 #<----------- POST ----------->#
 
