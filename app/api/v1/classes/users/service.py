@@ -63,7 +63,7 @@ def modify(id: UUID, user: UserChangeProfileData, db:Session) -> str:
     elif bcrypt.checkpw(user.password.encode('utf-8'),sql_user.hashed_password.encode('utf-8')) is False:
         raise ValueError('Wrong password. Unauthorize access.')
     else:
-        sql_user.name = user.name
+        sql_user.name = user.name 
         sql_user.lastname = user.lastname
         sql_user.email = user.email
         sql_user.birthdate = user.birthdate
