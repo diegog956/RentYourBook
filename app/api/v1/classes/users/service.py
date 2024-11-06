@@ -71,3 +71,14 @@ def modify(id: UUID, user: UserChangeProfileData, db:Session) -> str:
         db.commit()
         db.refresh(sql_user)
         return sql_user
+
+def user_exists(email: str, password: str, db: Session)-> UUID:
+    'Retorna el id del usuario para poder hacer las peticiones correspondientes mas adelante.'
+    user = db.query(User).filter(User.email == email).first()
+    if user is None:
+        raise ValueError('User not found')
+
+    if bcrypt.checkpw(password.encode('utf-8'), user.hashed_password.encode('utf-8')) is False:
+        raise ValueError('User & Passwords do not match')
+
+    return user.id_user
