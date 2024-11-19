@@ -5,6 +5,7 @@ from uuid import UUID
 import app.api.v1.classes.users.service as service
 from sqlalchemy.orm import Session
 from app.api.v1.database.database import get_db
+from app.api.v1.auth.authentication import oauth2_scheme, get_id
 
 
 user_router = APIRouter()
@@ -12,15 +13,16 @@ user_router = APIRouter()
 
 #<----------- GET ----------->#
 
-'[GET] Retorna la Home que prueba el enrutamiento (?)'
-@user_router.get('/', status_code=status.HTTP_200_OK)
-async def home_user():
-    return 'Users'
+# '[GET] Retorna la Home que prueba el enrutamiento (?)'
+# @user_router.get('/', status_code=status.HTTP_200_OK)
+# async def home_user():
+#     return 'Users'
 
 '[GET] Devuelve la informacion del usuario por su id' #PROTEGER
-@user_router.get('/{id}', response_model=UserInfo ,status_code=status.HTTP_200_OK)
-async def get_one_user(id: UUID, db: Session = Depends(get_db)):
-    return service.get_user_info(id, db)
+@user_router.get('/', response_model=UserInfo ,status_code=status.HTTP_200_OK, )
+async def get_one_user(token: str = Depends(oauth2_scheme) , db: Session = Depends(get_db)):
+    current_id: UUID = get_id(token)
+    return service.get_user_info(current_id, db)
    
 
 '''Tener cuidado con rutas como '/all' ya que toma como que 'all' es un id! '''
