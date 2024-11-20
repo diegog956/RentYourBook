@@ -34,13 +34,12 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
         raise HTTPException(detail=str(e), status_code=status.HTTP_400_BAD_REQUEST)
         
     payload={'id':str(UUID(bytes=id)),
-                 'iat':datetime.datetime.utcnow(),
-                 'exp':(datetime.datetime.utcnow() + datetime.timedelta(days=1)).timestamp(),
+                 'iat':datetime.datetime.now(datetime.timezone.utc)(),
+                 'exp':(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=1)).timestamp(),
                  'scope': 'user'
                  }
     token: str = encode_token(payload=payload)
-    print(id)
-    return TokenResponse(access_token=token, token_type='bearer')
+    return TokenResponse(access_token=token, token_type='Bearer')
     
 
 

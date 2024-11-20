@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date
 from typing_extensions import Self
 
@@ -7,7 +7,7 @@ class BookAdd (BaseModel):
  # id_book: int --> El id se ingresa de forma autoincremental.
  title: str
  release_year: date
- favorites_amount: int | 0
+ favorites_amount: int = Field(default=0)
  available_units: int
  image_url: str
 
@@ -21,6 +21,10 @@ class BookInfo (BaseModel):
  favorites_amount: int
  available_units: int
  image_url: str
+
+ class config:
+        orm_mode: True
+
 
 
 
