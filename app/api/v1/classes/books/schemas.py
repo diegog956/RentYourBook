@@ -4,7 +4,7 @@ from typing_extensions import Self
 
 class BookAdd (BaseModel):
  'Schema para ingresar un nuevo libro con la informacion de una obra literaria.'
- # id_book: int --> El id se ingresa de forma autoincremental.
+ id_book: int #(ISBN)
  title: str
  release_year: date
  favorites_amount: int = Field(default=0)

@@ -8,7 +8,7 @@ class Books(Base):
 
     __tablename__ = 'Books'
 
-    id_book: int = Column(Integer, primary_key=True, autoincrement=True)
+    id_book: int = Column(Integer, primary_key=True)
     title: str = Column(String, nullable=False)
     release_year: Date = Column(Date, nullable=False)
     favorites_amount:int = Column(Integer, default=0 ,nullable=False)
