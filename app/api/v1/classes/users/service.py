@@ -72,7 +72,7 @@ def modify(id: UUID, user: UserChangeProfileData, db:Session) -> str:
         db.refresh(sql_user)
         return sql_user
 
-def user_exists(email: str, password: str, db: Session)-> UUID:
+def user_exists(email: str, password: str, db: Session)-> bytes:
     'Retorna el id del usuario para poder hacer las peticiones correspondientes mas adelante.'
     user = db.query(User).filter(User.email == email).first()
     if user is None:

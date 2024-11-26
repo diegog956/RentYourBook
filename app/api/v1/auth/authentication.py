@@ -4,6 +4,7 @@ from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
 from app.api.v1.database.database import get_db
+from app.api.v1.classes.users.models import User
 from sqlalchemy.orm import Session
 from app.api.v1.classes.users.service import user_exists
 from uuid import UUID
@@ -29,14 +30,16 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     Si existe retorno un token para que acceda a las rutas que el desee.
     '''
     try:
-        id: UUID = user_exists(form_data.username, form_data.password, db)
+        id: bytes = user_exists(form_data.username, form_data.password, db)
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=status.HTTP_400_BAD_REQUEST)
-        
+    
+    user: User = db.query(User).filter(User.id_user == id).first()
+    
     payload={'id':str(UUID(bytes=id)),
-                 'iat':datetime.datetime.now(datetime.timezone.utc)(),
+                 'iat':datetime.datetime.now(datetime.timezone.utc),
                  'exp':(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=1)).timestamp(),
-                 'scope': 'user'
+                 'scope': user.user_role
                  }
     token: str = encode_token(payload=payload)
     return TokenResponse(access_token=token, token_type='Bearer')
@@ -64,3 +67,10 @@ def get_id(token: str) -> UUID:
     payload: dict = decode_token(token)
     
     return UUID(payload['id'])
+
+def verify_admin_access(token:str = Depends(oauth2_scheme))-> str:
+    payload: dict = decode_token(token)
+    if payload['scope'] == 'admin':
+        return 'admin'
+    else:
+        raise HTTPException(detail='Not authorize.', status_code=status.HTTP_401_UNAUTHORIZED)
