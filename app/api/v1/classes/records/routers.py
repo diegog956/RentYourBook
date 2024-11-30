@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends,status
-import app.api.v1.classes.record.service as service
+import app.api.v1.classes.records.service as service
 from app.api.v1.database.database import get_db
 from sqlalchemy.orm import Session
 from app.api.v1.auth.authentication import oauth2_scheme
@@ -22,4 +22,13 @@ async def get_my_records(token:str = Depends(oauth2_scheme), db:Session = Depend
 
 @record_router.post('/', response_model=RecordInfo, status_code=status.HTTP_200_OK)
 async def add_record(record: RecordAdd, token:str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
+    #Finalizar servicio.
     return service.add_record(record, token, db)
+
+#Para mi deberia de retornarse Books_Returned_Info (Crear). 
+@record_router.delete('/delete/{id}', response_model=RecordInfo, status_code=status.HTTP_200_OK, dependencies=[Depends(verify_admin_access)])
+def function(id: int, db:Session = Depends(get_db)):
+    # El id es id_book_unit (Solo un libro puede ser reservado a la vez.)
+    # Se busca en Records.
+    
+    pass

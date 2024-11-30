@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from uuid import UUID
-from app.api.v1.classes.record.models import Record
+from app.api.v1.classes.records.models import Record
 from datetime import datetime
 
 class RecordAdd(BaseModel):
