@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .models import Books
+import requests as req
 
 def get_books(page:int, size:int, db: Session) -> list[BookInfo]:
     
@@ -51,3 +52,6 @@ def delete_book(id: int , db: Session) -> BookInfo:
     db.commit()
 
     return book
+
+def change_password(token:str, db:Session):
+    pass

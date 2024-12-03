@@ -1,7 +1,7 @@
 from app.api.v1.classes.users.schemas import UserRegister, UserInfo,UserChangeProfileData
 from app.api.v1.database.database import get_db
 from app.api.v1.classes.users.models import User
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .models import User
@@ -82,3 +82,23 @@ def user_exists(email: str, password: str, db: Session)-> bytes:
         raise ValueError('User & Passwords do not match')
 
     return user.id_user
+
+def get_amount_warnings(id: bytes, db:Session)->int:
+
+    user = db.query(User).filter(User.id_user == id).first()
+
+    if user is None:
+        raise HTTPException(detail='User not found in database.', status_code=status.HTTP_404_NOT_FOUND)
+    
+    return user.warning_amounts
+
+def add_plus_one_rented_books(id:bytes, db:Session)->None:
+    user = db.query(User).filter(User.id_user == id).first()
+
+    user.rented_books += 1
+
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return None

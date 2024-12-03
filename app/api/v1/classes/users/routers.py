@@ -65,7 +65,7 @@ async def unban(id: UUID, db: Session = Depends(get_db)):
 #<---------- PUT ------------->#
 
 '[PUT] Cambia informacion del usuario a partir de id y contraseña'
-@user_router.put('/modify/', response_model=UserInfo, status_code=status.HTTP_202_ACCEPTED)
+@user_router.put('/modify', response_model=UserInfo, status_code=status.HTTP_202_ACCEPTED)
 async def modify(user: UserChangeProfileData, token: str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
     try:
         current_id: UUID = get_id(token)
@@ -74,5 +74,12 @@ async def modify(user: UserChangeProfileData, token: str = Depends(oauth2_scheme
         raise HTTPException(detail=str(e), status_code=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         raise HTTPException(detail=str(e))
+    
+#<---------- PATCH ------------->#
 
- 
+@user_router.patch('/password', status_code=status.HTTP_200_OK)
+async def change_password(token:str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
+
+    'Se debe de crear un modelo de pydantic con la contrseña. Parametros de query pueden ser vistos por otros.'
+    service.change_password() #Realizar implementacion.
+    pass

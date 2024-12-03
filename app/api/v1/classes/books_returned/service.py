@@ -24,3 +24,10 @@ def get_old_records_by_id(id: UUID, db:Session):
         raise HTTPException(detail='Records not found for id provided.', status_code=status.HTTP_404_NOT_FOUND)
     
     return lista
+
+def add_new_records_to_record_history(bookreturned: BookReturned, db:Session)-> None:
+
+    db.add(bookreturned)
+    db.commit()
+    db.refresh(bookreturned)
+    return bookreturned
