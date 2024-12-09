@@ -4,6 +4,9 @@
 
 Welcome to **RentYourBook**, a library rental service API built with FastAPI. This project streamlines the renting process for books, ensuring secure user authentication and efficient management of library operations.
 
+Check full API documentation here:
+https://rentyourbookapi.onrender.com/docs
+
 ## 🚀 Features
 
 - **User Management**: Create, read, update, and delete user profiles with secure password hashing.
@@ -32,4 +35,6 @@ Welcome to **RentYourBook**, a library rental service API built with FastAPI. Th
 
 ---
 
+## Endpoints Preview
 
+![image](image.png)
