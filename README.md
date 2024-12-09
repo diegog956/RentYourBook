@@ -16,8 +16,6 @@ https://rentyourbookapi.onrender.com/docs
 - **Database**: Robust database management using MySQL.
 - **Cloud Integration**: Leveraging AWS services for deployment and scalability.
 
-**Note**: This project is currently under active development. Stay tuned for more updates and enhancements!
-
 ## 🛠️ Tech Stack
 
 - **Framework**: FastAPI
