@@ -4,7 +4,6 @@ from fastapi import Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .models import Books
-import requests as req
 
 def get_books(page:int, size:int, db: Session) -> list[BookInfo]:
     
